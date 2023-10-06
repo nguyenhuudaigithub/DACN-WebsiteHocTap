@@ -5,7 +5,7 @@ import {
   loginUser,
   logoutUser,
 } from "../controllers/user.controller";
-import {isAutheticated} from "../middleware/auth"
+import {isAutheticated, authorizeRoles} from "../middleware/auth"
 const userRoute = express.Router();
 
 userRoute.post("/registration", registrantionUser);
@@ -14,6 +14,6 @@ userRoute.post("/activation-user", activateUser);
 
 userRoute.post("/login", loginUser);
 
-userRoute.post("/logout",isAutheticated, logoutUser);
+userRoute.post("/logout",isAutheticated,authorizeRoles("admin") , logoutUser);
 
 export default userRoute;
