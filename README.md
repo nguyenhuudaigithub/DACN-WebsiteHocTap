@@ -6,8 +6,14 @@
 
 ### Nhật
 
-Viết API cho updateAccessToken (user.controller.ts)
-Viết API cho getUserInfo (user.controller.ts)
-Viết API cho socialAuth (user.controller.ts)
+-> BackEnd
 
-Viết getUserById (user.service.ts)
+(course.model.ts)
+
+(user.controller.ts) && (user.route.ts) : updateAccessToken, getUserInfo, socialAuth, updateUserInfo, updatePassword, updateProfilePicture, uploadCourse
+
+(course.controller.ts) && (course.route.ts): uploadCourse, editCourse
+
+(user.service.ts): getUserById
+
+(course.service.ts): createCourse
