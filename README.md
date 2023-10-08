@@ -6,8 +6,6 @@
 
 ### Nhật
 
-Viết API cho updateAccessToken (user.controller.ts)
-Viết API cho getUserInfo (user.controller.ts)
-Viết API cho socialAuth (user.controller.ts)
+(user.controller.ts) && (user.route.ts) : updateAccessToken, getUserInfo, socialAuth, updateUserInfo, updatePassword, updateProfilePicture
 
-Viết getUserById (user.service.ts)
+(user.service.ts): getUserById
