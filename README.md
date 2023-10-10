@@ -6,6 +6,10 @@
 
 ### Nhật
 
+-> Client
+
+from 0 - 40p
+
 -> BackEnd
 
 (course.model.ts)
