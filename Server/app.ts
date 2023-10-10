@@ -8,6 +8,7 @@ import { ErrorMiddleware } from './middleware/error';
 import userRoute from './routes/user.route';
 import courseRouter from './routes/course.route';
 import analyticsRouter from './routes/analytics.route';
+import layoutRouter from './routes/layout.route';
 app.use(compression());
 
 app.use(express.json({ limit: '50mb' }));
@@ -22,7 +23,7 @@ app.use(
 
 // routes
 app.use('/api/v1', userRoute);
-app.use('/api/v1', courseRouter,analyticsRouter);
+app.use('/api/v1', courseRouter,analyticsRouter,layoutRouter);
 
 app.get('/test', (req: Request, res: Response, next: NextFunction) => {
   res.status(200).json({
