@@ -7,6 +7,8 @@ import compression from 'compression';
 import { ErrorMiddleware } from './middleware/error';
 import userRoute from './routes/user.route';
 import courseRouter from './routes/course.route';
+import orderRouter from './routes/order.route';
+import notificationRoute from './routes/notification.route';
 
 app.use(compression());
 
@@ -21,8 +23,8 @@ app.use(
 );
 
 // routes
-app.use('/api/v1', userRoute);
-app.use('/api/v1', courseRouter);
+app.use('/api/v1', userRoute, orderRouter, courseRouter,notificationRoute);
+// app.use('/api/v1', courseRouter);
 
 app.get('/test', (req: Request, res: Response, next: NextFunction) => {
   res.status(200).json({
