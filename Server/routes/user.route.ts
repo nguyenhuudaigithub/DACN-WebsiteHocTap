@@ -10,8 +10,11 @@ import {
   updateUserInfo,
   updatePassword,
   updateProfilePicture,
+  getAllUsers,
+  updateUserRole,
+  deleteUser,
 } from '../controllers/user.controller';
-import { isAutheticated } from '../middleware/auth';
+import { authorizeRoles, isAutheticated } from '../middleware/auth';
 const userRoute = express.Router();
 
 userRoute.post('/registration', registrantionUser);
@@ -33,5 +36,10 @@ userRoute.put('/update-user-info', isAutheticated, updateUserInfo);
 userRoute.put('/update-user-password', isAutheticated, updatePassword);
 
 userRoute.put('/update-user-avatar', isAutheticated, updateProfilePicture);
+userRoute.get('/get-users', isAutheticated, authorizeRoles("admin"),getAllUsers);
+
+userRoute.put('/update-user', isAutheticated, authorizeRoles("admin"),updateUserRole);
+
+userRoute.delete('/delete-user/:id', isAutheticated, authorizeRoles("admin"),deleteUser);
 
 export default userRoute;
