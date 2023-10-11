@@ -1,3 +1,4 @@
+
 import { NextFunction, Request, Response } from "express";
 import { CatchAsyncError } from "../middleware/catchAsyncErrors";
 import ErrorHandler from "../utils/ErrorHandler";
@@ -10,7 +11,6 @@ import mongoose from "mongoose";
 import path from "path";
 import senMail from "../utils/sendMail";
 import NotificationModel from "../models/notificationModel";
-
 // upload course
 export const uploadCourse = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -71,6 +71,7 @@ export const editCourse = CatchAsyncError(
     }
   }
 );
+
 
 //Nhận khóa học duy nhất - mà không cần mua
 export const getSingleCourse = CatchAsyncError(
@@ -303,7 +304,35 @@ export const addAnwser = CatchAsyncError(
     }
   }
 );
+// get all courses -- only for admin
+export const getAllCourses = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      getAllCoursesService(res);
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 400));
 
+//delete course - only for admin
+
+export const deleteCourse = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id } = req.params;
+      const course = await CourseModel.findById(id);
+      if (!course) {
+        return next(new ErrorHandler("Course not found", 404));
+      }
+      await course.deleteOne({ id });
+      await redis.del(id);
+      res.status(200).json({
+        success: true,
+        message: "Course deleted successfully"
+      });
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 400));
+    }
+  }
+);
 // Thêm đánh giá trong khóa học 5 51
 interface IAddAnswerData {
   review: string;

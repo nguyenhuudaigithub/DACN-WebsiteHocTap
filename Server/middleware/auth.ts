@@ -28,7 +28,7 @@ export const isAutheticated = CatchAsyncError(
     const user = await redis.get(decoded.id);
 
     if (!user) {
-      return next(new ErrorHandler("User không đúng", 400));
+      return next(new ErrorHandler("Vui lòng đăng nhập để truy cập", 400));
     }
 
     req.user = JSON.parse(user);

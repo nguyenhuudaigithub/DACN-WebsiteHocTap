@@ -1,3 +1,5 @@
+
+
 import { NextFunction, Request, Response } from "express";
 import { CatchAsyncError } from "../middleware/catchAsyncErrors";
 import ErrorHandler from "../utils/ErrorHandler";
@@ -90,3 +92,13 @@ export const createOrder = CatchAsyncError(
     }
   }
 );
+// get all order -- only for admin
+export const getAllOrders = CatchAsyncError(
+    async (req: Request, res: Response, next: NextFunction) => {
+      try {
+        getAllOrdersService(res);
+      } catch (error: any) {
+        return next(new ErrorHandler(error.message, 400));
+      }
+    }
+  );
