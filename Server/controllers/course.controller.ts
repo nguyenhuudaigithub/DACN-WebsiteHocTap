@@ -72,7 +72,7 @@ export const editCourse = CatchAsyncError(
   }
 );
 
-//get single course -- without purchasing
+//Nhận khóa học duy nhất - mà không cần mua
 export const getSingleCourse = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -106,7 +106,7 @@ export const getSingleCourse = CatchAsyncError(
   }
 );
 
-// get all course -- without purchasing           4 57
+// Nhận tất cả các khóa học - mà không cần mua          4 57
 export const getAllCourses = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -136,7 +136,7 @@ export const getAllCourses = CatchAsyncError(
   }
 );
 
-//get course content -- only for valid user       5 15
+//Nhận nội dung khóa học - chỉ dành cho người dùng hợp lệ    5 15
 export const getCourseByUser = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -170,7 +170,7 @@ export const getCourseByUser = CatchAsyncError(
   }
 );
 
-// add question in course 5 26
+// Thêm câu hỏi trong khóa học 5 26
 interface IAddQuestionData {
   question: string;
   courseId: string;
@@ -195,14 +195,14 @@ export const addQuestion = CatchAsyncError(
         return next(new ErrorHandler("Content ID không hợp lệ", 400));
       }
 
-      // create a new question object
+      // Tạo một đối tượng câu hỏi mới
       const newQuestion: any = {
         user: req.user,
         question,
         questionReplies: [],
       };
 
-      //add this question to our course content
+      //Thêm câu hỏi này vào nội dung khóa học của chúng tôi
       courseContent.questions.push(newQuestion);
 
       await NotificationModel.create({
@@ -211,7 +211,7 @@ export const addQuestion = CatchAsyncError(
         message: `Bạn có một câu hỏi mới từ ${courseContent.title}`,
       });
 
-      // save the updated course
+      //Lưu khóa học cập nhật
       await course?.save();
 
       res.status(200).json({
@@ -224,7 +224,7 @@ export const addQuestion = CatchAsyncError(
   }
 );
 
-// add answer in course question 5 26
+// Thêm câu trả lời trong câu hỏi khóa học 5 26
 interface IAddAnswerData {
   answer: string;
   courseId: string;
@@ -259,19 +259,19 @@ export const addAnwser = CatchAsyncError(
         return next(new ErrorHandler("Question Id không hợp lệ", 400));
       }
 
-      // create a new answer object
+      // Tạo đối tượng trả lời mới
       const newAnswer: any = {
         user: req.user,
         answer,
       };
 
-      // add this answer to our course content
+      //  Thêm câu trả lời này vào nội dung khóa học của chúng tôi
       question.questionReplies?.push(newAnswer);
 
       await course?.save();
 
       if (req.user?._id === question.user._id) {
-        //create a notification
+        //Tạo thông báo
         await NotificationModel.create({
           user: req.user?._id,
           title: "Mới nhận được câu trả lời cho câu hỏi.",
@@ -304,7 +304,7 @@ export const addAnwser = CatchAsyncError(
   }
 );
 
-// add review in course 5 51
+// Thêm đánh giá trong khóa học 5 51
 interface IAddAnswerData {
   review: string;
   courseId: string;
@@ -318,7 +318,7 @@ export const addReview = CatchAsyncError(
       const userCourseList = req.user?.courses;
       const courseId = req.params.id;
 
-      // check if courseId already exists in userCourseList based on _id
+      // kiểm tra xem courseId đã tồn tại trong userCourseList chưa dựa trên _id
       const courseExists = userCourseList?.some(
         (course: any) => course._id.toSting() === courseId.toString()
       );
@@ -360,7 +360,7 @@ export const addReview = CatchAsyncError(
         message: `${req.user?.name} đưa ra đánh giá trong ${course?.name}`,
       };
 
-      // creadte notification
+      // Thông báo 
 
       res.status(200).json({
         success: true,
@@ -372,7 +372,7 @@ export const addReview = CatchAsyncError(
   }
 );
 
-// add reply in review
+// Thêm câu trả lời trong bài đánh giá
 interface IAddReviewData {
   comment: string;
   courseId: string;

@@ -3,7 +3,7 @@ import { NextFunction, Request, Response } from "express";
 import { CatchAsyncError } from "../middleware/catchAsyncErrors";
 import ErrorHandler from "../utils/ErrorHandler";
 
-// get all notifications -- only admin
+//  Nhận tất cả thông báo -- chỉ quản trị viên
 export const getNotifications = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -21,7 +21,7 @@ export const getNotifications = CatchAsyncError(
   }
 );
 
-//update notifications status --- only admin
+//Cập nhật trạng thái thông báo --- chỉ quản trị viên
 export const updateNotification = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {

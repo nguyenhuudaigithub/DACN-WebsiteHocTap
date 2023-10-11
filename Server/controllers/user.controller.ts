@@ -138,6 +138,7 @@ export const activateUser = CatchAsyncError(
   }
 );
 
+// Đăng nhập
 interface ILoginRequest {
   email: string;
   password: string;
@@ -173,7 +174,7 @@ export const loginUser = CatchAsyncError(
   }
 );
 
-// đăng xuất
+// Đăng xuất
 export const logoutUser = CatchAsyncError(
   (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -193,7 +194,7 @@ export const logoutUser = CatchAsyncError(
   }
 );
 
-// cập nhật access token
+// Cập nhật access token
 export const updateAccessToken = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
