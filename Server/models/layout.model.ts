@@ -1,48 +1,47 @@
 import { Schema, model, Document } from "mongoose";
 
 interface FaqItem extends Document {
-    question: string;
-    answer: string;
+  question: string;
+  answer: string;
 }
 interface Category extends Document {
-    title: string;
+  title: string;
 }
 interface BannerImage extends Document {
-    public_id: string;
-    url: string
+  public_id: string;
+  url: string;
 }
 interface Layout extends Document {
-    type: string;
-    faq: FaqItem[];
-    categories: Category[];
-    banner: {
-        image: BannerImage;
-        title: StaticRange;
-        subtitle: string;
-    };
+  type: string;
+  faq: FaqItem[];
+  categories: Category[];
+  banner: {
+    image: BannerImage;
+    title: StaticRange;
+    subtitle: string;
+  };
 }
 const faqSchema = new Schema<FaqItem>({
-    question: { type: String },
-    answer: { type: String },
+  question: { type: String },
+  answer: { type: String },
 });
 const categorySchema = new Schema<Category>({
-    title: { type: String },
+  title: { type: String },
 });
 const bannerImageSchema = new Schema<BannerImage>({
-    public_id: { type: String },
-    url: { type: String },
+  public_id: { type: String },
+  url: { type: String },
 });
 const layoutSchema = new Schema<Layout>({
-    type: { type: String },
-    faq: { faqSchema },
-    categories: { categorySchema },
-    banner: {
-        image: bannerImageSchema,
-        title: { type: String },
-        subtitle: { type: String },
-    },
-
+  type: { type: String },
+  faq: { faqSchema },
+  categories: { categorySchema },
+  banner: {
+    image: bannerImageSchema,
+    title: { type: String },
+    subtitle: { type: String },
+  },
 });
-const LayoutModel = model<Layout>('Layout', layoutSchema);
+const LayoutModel = model<Layout>("Layout", layoutSchema);
 
 export default LayoutModel;

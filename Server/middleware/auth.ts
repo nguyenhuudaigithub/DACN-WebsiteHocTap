@@ -37,12 +37,16 @@ export const isAutheticated = CatchAsyncError(
   }
 );
 
-
-export const authorizeRoles = (...roles:string[]) => {
-  return (req:Request,res:Response,next:NextFunction)=>{
-    if(!roles.includes(req.user?.role || '')){
-      return next(new ErrorHandler(`Chức vụ ${req.user?.role}không được cấp quyền truy cập vào đây !`,403));
+export const authorizeRoles = (...roles: string[]) => {
+  return (req: Request, res: Response, next: NextFunction) => {
+    if (!roles.includes(req.user?.role || "")) {
+      return next(
+        new ErrorHandler(
+          `Chức vụ ${req.user?.role}không được cấp quyền truy cập vào đây !`,
+          403
+        )
+      );
     }
     next();
-  }
-}
+  };
+};

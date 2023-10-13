@@ -1,5 +1,5 @@
-import { Response } from 'express';
-import userModel from '../models/user.model';
+import { Response } from "express";
+import userModel from "../models/user.model";
 
 // lấy user từ id
 export const getUserById = async (id: string, res: Response) => {
@@ -16,8 +16,8 @@ export const getUserById = async (id: string, res: Response) => {
 };
 
 //get all users
-export const getAllUsersService = async(res: Response)=>{
-  const users = await userModel.find().sort({createdAt: -1});
+export const getAllUsersService = async (res: Response) => {
+  const users = await userModel.find().sort({ createdAt: -1 });
   res.status(201).json({
     success: true,
     users,
@@ -26,8 +26,12 @@ export const getAllUsersService = async(res: Response)=>{
 
 //update user role
 
-export const updateUserRoleService = async (id: string, res: Response, role:string) => {
-  const user = await userModel.findByIdAndUpdate(id, {role}, {new: true});
+export const updateUserRoleService = async (
+  id: string,
+  res: Response,
+  role: string
+) => {
+  const user = await userModel.findByIdAndUpdate(id, { role }, { new: true });
 
   res.status(201).json({
     success: true,

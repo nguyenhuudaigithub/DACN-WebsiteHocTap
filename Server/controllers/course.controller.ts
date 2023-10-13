@@ -1,9 +1,8 @@
-
 import { NextFunction, Request, Response } from "express";
 import { CatchAsyncError } from "../middleware/catchAsyncErrors";
 import ErrorHandler from "../utils/ErrorHandler";
 import cloudinary from "cloudinary";
-import { createCourse } from "../services/course.service";
+import { createCourse, getAllCoursesService } from "../services/course.service";
 import CourseModel from "../models/course.model";
 import { redis } from "../utils/redis";
 import ejs from "ejs";
@@ -11,6 +10,7 @@ import mongoose from "mongoose";
 import path from "path";
 import senMail from "../utils/sendMail";
 import NotificationModel from "../models/notificationModel";
+
 // upload course
 export const uploadCourse = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -72,7 +72,6 @@ export const editCourse = CatchAsyncError(
   }
 );
 
-
 //Nhận khóa học duy nhất - mà không cần mua
 export const getSingleCourse = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -108,34 +107,34 @@ export const getSingleCourse = CatchAsyncError(
 );
 
 // Nhận tất cả các khóa học - mà không cần mua          4 57
-export const getAllCourses = CatchAsyncError(
-  async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const isCacheExist = await redis.get("allCourses");
+// export const getAllCourses = CatchAsyncError(
+//   async (req: Request, res: Response, next: NextFunction) => {
+//     try {
+//       const isCacheExist = await redis.get("allCourses");
 
-      if (isCacheExist) {
-        const course = JSON.parse(isCacheExist);
-        res.status(200).json({
-          success: true,
-          course,
-        });
-      } else {
-        const course = await CourseModel.find().select(
-          "-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links"
-        );
+//       if (isCacheExist) {
+//         const course = JSON.parse(isCacheExist);
+//         res.status(200).json({
+//           success: true,
+//           course,
+//         });
+//       } else {
+//         const course = await CourseModel.find().select(
+//           "-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links"
+//         );
 
-        await redis.set("allCourses", JSON.stringify(course));
+//         await redis.set("allCourses", JSON.stringify(course));
 
-        res.status(200).json({
-          success: true,
-          course,
-        });
-      }
-    } catch (error: any) {
-      return next(new ErrorHandler(error.message, 500));
-    }
-  }
-);
+//         res.status(200).json({
+//           success: true,
+//           course,
+//         });
+//       }
+//     } catch (error: any) {
+//       return next(new ErrorHandler(error.message, 500));
+//     }
+//   }
+// );
 
 //Nhận nội dung khóa học - chỉ dành cho người dùng hợp lệ    5 15
 export const getCourseByUser = CatchAsyncError(
@@ -311,7 +310,9 @@ export const getAllCourses = CatchAsyncError(
       getAllCoursesService(res);
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 400));
-
+    }
+  }
+);
 //delete course - only for admin
 
 export const deleteCourse = CatchAsyncError(
@@ -326,7 +327,7 @@ export const deleteCourse = CatchAsyncError(
       await redis.del(id);
       res.status(200).json({
         success: true,
-        message: "Course deleted successfully"
+        message: "Course deleted successfully",
       });
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 400));
@@ -389,7 +390,7 @@ export const addReview = CatchAsyncError(
         message: `${req.user?.name} đưa ra đánh giá trong ${course?.name}`,
       };
 
-      // Thông báo 
+      // Thông báo
 
       res.status(200).json({
         success: true,

@@ -1,9 +1,7 @@
-
-
 import { NextFunction, Request, Response } from "express";
 import { CatchAsyncError } from "../middleware/catchAsyncErrors";
 import ErrorHandler from "../utils/ErrorHandler";
-import OrderModel, { IOder } from "../models/orderModel";
+import { IOder } from "../models/orderModel";
 import userModel from "../models/user.model";
 import CourseModel from "../models/course.model";
 import path from "path";
@@ -11,6 +9,7 @@ import ejs from "ejs";
 import senMail from "../utils/sendMail";
 import NotificationModel from "../models/notificationModel";
 import { newOrder } from "../services/order.services";
+import { getAllCoursesService } from "../services/course.service";
 
 // create order
 export const createOrder = CatchAsyncError(
@@ -37,8 +36,6 @@ export const createOrder = CatchAsyncError(
         userId: user?._id,
         payment_info,
       };
-
-      
 
       const mailData = {
         order: {
@@ -81,12 +78,11 @@ export const createOrder = CatchAsyncError(
         message: `Bạn có một đơn hàng mới ${course?.name}`,
       });
 
-      course.purchased ? course.purchased += 1 : course.purchased;
+      course.purchased ? (course.purchased += 1) : course.purchased;
 
       await course.save();
 
       newOrder(data, res, next);
-    
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 500));
     }
@@ -94,11 +90,11 @@ export const createOrder = CatchAsyncError(
 );
 // get all order -- only for admin
 export const getAllOrders = CatchAsyncError(
-    async (req: Request, res: Response, next: NextFunction) => {
-      try {
-        getAllOrdersService(res);
-      } catch (error: any) {
-        return next(new ErrorHandler(error.message, 400));
-      }
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      getAllCoursesService(res);
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 400));
     }
-  );
+  }
+);

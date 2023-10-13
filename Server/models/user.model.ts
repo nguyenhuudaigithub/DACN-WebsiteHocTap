@@ -1,7 +1,7 @@
-require('dotenv').config();
-import mongoose, { Document, Model, Schema } from 'mongoose';
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+require("dotenv").config();
+import mongoose, { Document, Model, Schema } from "mongoose";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 const emailRegexPattern: RegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -25,22 +25,22 @@ const userSchema: Schema<IUser> = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: [true, 'Vui long nhap ten !'],
+      required: [true, "Vui long nhap ten !"],
     },
     email: {
       type: String,
-      required: [true, 'Vui lòng nhập email!'],
+      required: [true, "Vui lòng nhập email!"],
       validate: {
         validator: function (value: string) {
           return emailRegexPattern.test(value);
         },
-        message: 'Vui lòng nhập đúng email!',
+        message: "Vui lòng nhập đúng email!",
       },
       unique: true,
     },
     password: {
       type: String,
-      minlength: [6, 'Độ dài tổi thiểu của mật khẩu là 6 ký tự'],
+      minlength: [6, "Độ dài tổi thiểu của mật khẩu là 6 ký tự"],
       select: false,
     },
     avatar: {
@@ -49,7 +49,7 @@ const userSchema: Schema<IUser> = new mongoose.Schema(
     },
     role: {
       type: String,
-      default: 'user',
+      default: "user",
     },
     isVerified: {
       type: Boolean,
@@ -65,8 +65,8 @@ const userSchema: Schema<IUser> = new mongoose.Schema(
 );
 
 // Băm mật khẩu trước khi lưu
-userSchema.pre<IUser>('save', async function (next) {
-  if (!this.isModified('password')) {
+userSchema.pre<IUser>("save", async function (next) {
+  if (!this.isModified("password")) {
     return next();
   }
   this.password = await bcrypt.hash(this.password, 10);
@@ -75,14 +75,14 @@ userSchema.pre<IUser>('save', async function (next) {
 
 // token đăng nhập
 userSchema.methods.SignAccessToken = function () {
-  return jwt.sign({ id: this._id }, process.env.ACCESS_TOKEN || '', {
-    expiresIn: '5m',
+  return jwt.sign({ id: this._id }, process.env.ACCESS_TOKEN || "", {
+    expiresIn: "5m",
   });
 };
 // refresh
 userSchema.methods.SignRefreshToken = function () {
-  return jwt.sign({ id: this._id }, process.env.REFRESH_TOKEN || '', {
-    expiresIn: '3d',
+  return jwt.sign({ id: this._id }, process.env.REFRESH_TOKEN || "", {
+    expiresIn: "3d",
   });
 };
 
@@ -93,5 +93,5 @@ userSchema.methods.comparePassword = async function (
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
-const userModel: Model<IUser> = mongoose.model('User', userSchema);
+const userModel: Model<IUser> = mongoose.model("User", userSchema);
 export default userModel;

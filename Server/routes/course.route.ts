@@ -1,73 +1,63 @@
-import express from 'express';
-import { deleteCourse, editCourse, getAllCourses, uploadCourse } from '../controllers/course.controller';
-import { editCourse, uploadCourse, getSingleCourse, getAllCourses, getCourseByUser, addQuestion, addAnwser, addReview, addReplyToReview} from '../controllers/course.controller';
-import { authorizeRoles, isAutheticated } from '../middleware/auth';
+import express from "express";
+import {
+  deleteCourse,
+  addReview,
+  addReplyToReview,
+} from "../controllers/course.controller";
+import {
+  editCourse,
+  uploadCourse,
+  getSingleCourse,
+  getAllCourses,
+  getCourseByUser,
+  addQuestion,
+  addAnwser,
+} from "../controllers/course.controller";
+import { authorizeRoles, isAutheticated } from "../middleware/auth";
 const courseRouter = express.Router();
 
 courseRouter.post(
-  '/create-course',
+  "/create-course",
   isAutheticated,
-  authorizeRoles('admin'),
+  authorizeRoles("admin"),
   uploadCourse
 );
 
 courseRouter.put(
-  '/edit-course/:id',
+  "/edit-course/:id",
   isAutheticated,
-  authorizeRoles('admin'),
+  authorizeRoles("admin"),
   editCourse
 );
 courseRouter.put(
-  '/get-courses',
+  "/get-courses",
   isAutheticated,
-  authorizeRoles('admin'),
+  authorizeRoles("admin"),
   getAllCourses
 );
 courseRouter.delete(
-  '/delete-course/:id',
+  "/delete-course/:id",
   isAutheticated,
-  authorizeRoles('admin'),
+  authorizeRoles("admin"),
   deleteCourse
 );
 
-courseRouter.get(
-  '/get-course/:id',
-  getSingleCourse
-);
+courseRouter.get("/get-course/:id", getSingleCourse);
 
-courseRouter.get(
-  '/get-courses',
-  getAllCourses
-);
+courseRouter.get("/get-courses", getAllCourses);
 
-courseRouter.get(
-  '/get-course-content/:id',
-  isAutheticated,
-  getCourseByUser
-);
+courseRouter.get("/get-course-content/:id", isAutheticated, getCourseByUser);
+
+courseRouter.put("/add-question", isAutheticated, addQuestion);
+
+courseRouter.put("/add-anwser", isAutheticated, addAnwser);
+
+courseRouter.put("/add-review/:id", isAutheticated, addReview);
 
 courseRouter.put(
-  '/add-question',
+  "/add-reply",
   isAutheticated,
-  addQuestion
-);
-
-courseRouter.put(
-  '/add-anwser',
-  isAutheticated,
-  addAnwser
-);
-
-courseRouter.put(
-  '/add-review/:id',
-  isAutheticated,
-  addReview
-);
-
-courseRouter.put(
-  '/add-reply',
-  isAutheticated,
-  authorizeRoles('admin'),
+  authorizeRoles("admin"),
   addReplyToReview
 );
 
