@@ -36,6 +36,7 @@ userRoute.put("/update-user-info", isAutheticated, updateUserInfo);
 userRoute.put("/update-user-password", isAutheticated, updatePassword);
 
 userRoute.put("/update-user-avatar", isAutheticated, updateProfilePicture);
+
 userRoute.get(
   "/get-users",
   isAutheticated,
