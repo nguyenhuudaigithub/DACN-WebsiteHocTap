@@ -1,4 +1,4 @@
-'use-client';
+'use client'
 import React, { FC, useEffect, useState } from 'react';
 import { useTheme } from 'next-themes';
 import { BiMoon, BiSun } from 'react-icons/bi';

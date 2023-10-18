@@ -19,7 +19,7 @@ const userRoute = express.Router();
 
 userRoute.post("/registration", registrantionUser);
 
-userRoute.post("/activation-user", activateUser);
+userRoute.post("/activate-user", activateUser);
 
 userRoute.post("/login", loginUser);
 
