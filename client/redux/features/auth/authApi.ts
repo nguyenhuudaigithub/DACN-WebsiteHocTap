@@ -1,6 +1,6 @@
-import build from "next/dist/build";
+// Gọi Api đăng nhập, đăng ký, đăng nhập bằng phương thức khác
 import { apiSlice } from "../api/apiSlice";
-import { userRegistration } from "./authSlice";
+import { userLoggedIn, userRegistration } from "./authSlice";
 
 type RegistrationResponse = {
   message: string;
@@ -31,6 +31,7 @@ export const authApi = apiSlice.injectEndpoints({
         }
       },
     }),
+
     activation: builder.mutation({
       query: ({ activation_token, activation_code }) => ({
         url: "activate-user",
@@ -41,7 +42,62 @@ export const authApi = apiSlice.injectEndpoints({
         },
       }),
     }),
+
+    login: builder.mutation({
+      query: ({ email, password }) => ({
+        url: "login",
+        method: "POST",
+        body: {
+          email,
+          password,
+        },
+        credentials: "include" as const,
+      }),
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        try {
+          const result = await queryFulfilled;
+          dispatch(
+            userLoggedIn({
+              accessToken: result.data.activationToken,
+              user: result.data.user,
+            })
+          );
+        } catch (error) {
+          console.log(error);
+        }
+      },
+    }),
+    socialAuth: builder.mutation({
+      query: ({ email, name, avatar }) => ({
+        url: "social-auth",
+        method: "POST",
+        body: {
+          email,
+          name,
+          avatar,
+        },
+        credentials: "include" as const,
+      }),
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        try {
+          const result = await queryFulfilled;
+          dispatch(
+            userLoggedIn({
+              accessToken: result.data.activationToken,
+              user: result.data.user,
+            })
+          );
+        } catch (error) {
+          console.log(error);
+        }
+      },
+    }),
   }),
 });
 
-export const { useRegisterMutation, useActivationMutation } = authApi;
+export const {
+  useRegisterMutation,
+  useActivationMutation,
+  useLoginMutation,
+  useSocialAuthMutation,
+} = authApi;
