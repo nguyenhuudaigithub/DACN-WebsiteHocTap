@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 'use client'
 import React, { FC, useEffect, useState } from "react";
 import { useFormik } from "formik";
@@ -42,7 +41,7 @@ const SignUp: FC<Props> = ({ setRoute }) => {
         toast.error(errorData.data.message);
       }
     }
-  }, [isSuccess, error]);
+}, [isSuccess, error, data?.message, setRoute]);
 
   const formik = useFormik({
     initialValues: { name: "", email: "", password: "" },
@@ -61,7 +60,7 @@ const SignUp: FC<Props> = ({ setRoute }) => {
 
   return (
     <div className="w-full">
-      <h1 className={`${styles.title}`}>Đăng Nhập</h1>
+      <h1 className={`${styles.title}`}>Đăng Ký</h1>
       <form onSubmit={handleSubmit}>
         <div className="">
           <label className={`${styles.label}`} htmlFor="email">
